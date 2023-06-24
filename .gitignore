@@ -82,4 +82,3 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
-api/Movie.Data/obj/Movie.Data.csproj.nuget.dgspec.json
