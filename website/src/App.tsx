@@ -3,12 +3,15 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import Header from './components/Header'
 import './App.css'
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+    <GoogleOAuthProvider clientId="732674353767-69gt8nud7n9b0atdkj4piifn8cjge5e9.apps.googleusercontent.com">
       <Header />
       <div>
         <a href="https://vitejs.dev" target="_blank">
@@ -24,12 +27,20 @@ function App() {
           count is {count}
         </button>
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+        <GoogleLogin
+          onSuccess={credentialResponse => {
+            console.log(credentialResponse);
+          }}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+        />
         </p>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      </GoogleOAuthProvider>
     </>
   )
 }

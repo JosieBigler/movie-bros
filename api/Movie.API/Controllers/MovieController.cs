@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using M = Movie.Model;
 
 namespace Movie.API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route(Constants.API_CONTROLLER_TEMPLATE)]
 public class MoviesController : ControllerBase
 {
