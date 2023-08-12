@@ -5,6 +5,12 @@ import Header from './components/Header'
 import './App.css'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GoogleLogin } from '@react-oauth/google';
+import { Movies, MoviesList } from './components/Movies'
+
+const movies : MoviesList[] = [
+  {title: 'Test'},
+  {title: 'Shadowrunner'}
+]
 
 function App() {
   const [count, setCount] = useState(0)
@@ -22,6 +28,7 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
+      <Movies movies={movies}></Movies>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
