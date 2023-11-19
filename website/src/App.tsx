@@ -1,7 +1,7 @@
 import './App.css'
 import { getMovies } from './data/dataService';
 import { Movie } from './model/movie';
-import { MoviesComponent } from './ui/Movies'
+import { MoviesComponent } from './ui/Movies';
 
 function App() {
 
