@@ -5,7 +5,7 @@ using M = Movie.Model;
 namespace Movie.API.Controllers;
 
 [ApiController]
-[Authorize]
+//[Authorize]
 [Route(Constants.API_CONTROLLER_TEMPLATE)]
 public class MoviesController : ControllerBase
 {
