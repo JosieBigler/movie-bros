@@ -9,9 +9,6 @@ function App() {
   return (
     <>
       <div>
-           <div>
-            Movies
-           </div>
            <MoviesComponent movies={movies} ></MoviesComponent>
       </div>
     </>

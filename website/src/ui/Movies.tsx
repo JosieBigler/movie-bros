@@ -2,7 +2,7 @@ import { Movie } from "../model/movie"
 
 export const MoviesComponent : React.FC<{movies : Movie[]}> = ({movies})  => (
     <>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-1">
                 {
                     movies.map(x => {
                         return <MovieComponent key={x.id} movie={x}></MovieComponent>
