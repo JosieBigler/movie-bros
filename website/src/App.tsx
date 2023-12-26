@@ -1,6 +1,7 @@
 import { getMovies } from './data/dataService';
 import { Movie } from './model/movie';
 import { MoviesComponent } from './ui/Movies';
+import Rate from './pages/Rate'
 
 function App() {
 
@@ -8,7 +9,8 @@ function App() {
   return (
     <>
       <div>
-           <MoviesComponent movies={movies} ></MoviesComponent>
+           {/* <MoviesComponent movies={movies} ></MoviesComponent> */}
+           <Rate></Rate>
       </div>
     </>
   )
