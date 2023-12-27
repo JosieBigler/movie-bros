@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --prussian-blue: #0C3457ff;
+  --prussian-blue: #002547;
+  /* --prussian-blue: #0C3457ff; */
 }
 
 html,
@@ -36,21 +37,27 @@ body {
   clip-path: inset(-100vh 0 0 0);
   transform: translate(0%, 100vh);
 }
-.ttt {
-  width: 100%;
-  height: 50vh;
-  /* 50 - height/2 */
-  transform: translate(0%, 50vh);
+.details {
+  margin-left: 0;
+  padding: 64vh 0 0;
   position: absolute;
-  /* background-color: rgba(201, 192, 25, 0.526); */
 }
 .ttt1 {
-  /* width: 50%; */
-  height: 100%;
-  margin: auto;
+  padding: .2em 6vw .4em;
   text-shadow: 0 1px 2px #000;
-  /* background-color: rgba(60, 25, 201, 0.304); */
+  color: #dedede;
+  background-image: linear-gradient(to right,  #17110a , rgba(255, 255, 0, 0));
 }
-.ttt2 {
-  font-stretch: ultra-expanded;
+.the-bros {
+  position: absolute;
+  left: 50%; 
+  margin: 16vh auto;
+  transform: translate(-50%, 0);
+  white-space: nowrap
+}
+.the-bros > * {
+  background-color: #ffffff;
+  border-radius: 5px;
+  margin: .5em;
+  padding: .5em 1em;
 }
