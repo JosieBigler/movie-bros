@@ -1,10 +1,13 @@
 using MovieBros.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connString = "Server=aws.connect.psdb.cloud;Database=movie-bros;user=8k6pu1op02o8n55n8sx8;password=pscale_pw_ORgOXQ48F13oS51iKf20pJ6JQr4BegluRKuPUdeG4xz;SslMode=VerifyFull;";
+var connString = builder.Configuration["ConnectionStrings:Identity"];
+
+
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -15,6 +18,7 @@ builder.Services.AddDbContext<IdentityContext>(options =>
     options.UseMySql(connString, new MySqlServerVersion(new Version(8, 0, 34)));
 });
 
+builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
@@ -32,6 +36,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapIdentityApi<IdentityUser>();
 
