@@ -1,9 +1,19 @@
 import { FC } from "react";
-import { Movie } from "../model/movie";
+import { useAuth } from "../authProvider";
+import { useNavigate } from "react-router-dom";
 
-export const LoginPage : FC = () => (
-    <>
-        Login page. Should be a simple form with username and pass? 
-        Maybe we do Oauth with google/fb? 
-    </>
-)
+export const LoginPage : FC = () => {
+    const { setToken } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogin = () => {
+        setToken("this is a test token");
+        navigate("/", { replace: true });
+    };
+
+    setTimeout(() => {
+        handleLogin();
+    }, 3 * 1000);
+
+    return <>Login Page</>;
+}
