@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Movie.Data;
+using MovieBros.Data;
 
 #nullable disable
 
-namespace Movie.Data.Migrations
+namespace MovieBros.Data.Migrations
 {
     [DbContext(typeof(IdentityContext))]
     [Migration("20231227195642_InitialIdentity")]
