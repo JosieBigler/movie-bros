@@ -59,3 +59,10 @@ So, We might need more than a few tables, if we ever want to Add new users to ra
 How do we setup a data model to allow users to vote or not vote on movies? Something like we'd have a RatingEvent. Which has a Movie and a Date. Maybe some other data about the Movie. 
 
 We would then have a Rating table which would be the Id of the RatingEvent, a UserId, and a rating. 
+
+
+# demo creds 
+{
+  "email": "test@test.com",
+  "password": "Test123!@#"
+}
