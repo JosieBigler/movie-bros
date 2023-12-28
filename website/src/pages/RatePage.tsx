@@ -1,4 +1,5 @@
 
+import axios from "axios";
 import { useState } from "react";
 
 let imagesPath: string[] = [
@@ -15,7 +16,18 @@ let dddd = "Shawn 8.8";
 let ddddd = "Wesley 0.5";
 let dddddd = "Jasper 5";
 
+const testApiCall = () => {
+  axios({
+    method: 'get',
+    url: 'https://localhost:7097/api/Movies',
+    withCredentials: true
+  }).then(promise => {
+    console.log(promise);
+  });
+}
+
 function Rate2() {
+  testApiCall();
   const [aaa, aaaa] = useState(imagesPath[0])
   function sayHello() {
     aaaa(aaa === imagesPath[0] ? imagesPath[1] : imagesPath[0])

@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connString = builder.Configuration["ConnectionStrings:Identity"];
 
-
+var localOrigin = "localhost";
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -21,6 +21,18 @@ builder.Services.AddDbContext<IdentityContext>(options =>
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: localOrigin,
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:5173", "http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+        });
+});
 
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<IdentityContext>();
@@ -36,7 +48,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors();
+app.UseCors(localOrigin);
+
 app.UseAuthentication();
 app.UseAuthorization();
 

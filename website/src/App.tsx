@@ -1,5 +1,5 @@
 import  AuthProvider  from "./authProvider";
-import Routes from "./routes/ProtectedRoute";
+import Routes from "./routes/Routes";
 
 function App() {
 
