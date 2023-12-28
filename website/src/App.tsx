@@ -1,17 +1,13 @@
-import { getMovies } from './data/dataService';
-import { Movie } from './model/movie';
-import { MoviesComponent } from './ui/Movies';
-import { Rate } from './pages/Rate'
+import  AuthProvider  from "./authProvider";
+import Routes from "./routes/Routes";
 
 function App() {
 
-  const movies : Movie[] = getMovies();
   return (
     <>
-      <div>
-           {/* <MoviesComponent movies={movies} ></MoviesComponent> */}
-           <Rate></Rate>
-      </div>
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
     </>
   )
 }

@@ -1,4 +1,4 @@
-import { Movie } from "./Movies";
+import { Movie } from "../model/movie";
 
 export interface IApi {
     getMovies(): Promise<Movie[]>
