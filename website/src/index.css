@@ -41,6 +41,17 @@ body {
   margin-left: 0;
   padding: 64vh 0 0;
   position: absolute;
+  animation: 0.5s ease-in 0s 1 slideInFromLeft;
+}
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-1%);
+    opacity: 0.0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1.0;
+  }
 }
 .ttt1 {
   padding: .2em 6vw .4em;
