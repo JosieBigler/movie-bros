@@ -29,6 +29,20 @@ const Bros : Bro[] = [
   },
 ]
 
+const testRate = () => {
+  axios({
+    method: 'POST',
+    url: 'https://localhost:7097/api/Ratings',
+    withCredentials: true,
+    data: {
+      movieId: 'a660d18a-fc15-4de0-8ab9-9871f63506a8',
+      rating: 1.2,
+    }
+  }).then(promise => {
+    // console.log(promise);
+  });
+}
+
 const testApiCall = () => {
   axios({
     method: 'get',
@@ -41,6 +55,7 @@ const testApiCall = () => {
 
 function Rate2() {
   testApiCall();
+  testRate();
   const [aaa, aaaa] = useState(imagesPath[0])
   function sayHello() {
     aaaa(aaa === imagesPath[0] ? imagesPath[1] : imagesPath[0])
