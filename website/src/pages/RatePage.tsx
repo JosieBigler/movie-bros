@@ -22,7 +22,7 @@ const testApiCall = () => {
     url: 'https://localhost:7097/api/Movies',
     withCredentials: true
   }).then(promise => {
-    console.log(promise);
+    // console.log(promise);
   });
 }
 

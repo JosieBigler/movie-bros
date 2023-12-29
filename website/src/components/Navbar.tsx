@@ -6,9 +6,9 @@ interface NavbarProps {
 
 const Navbar: FC<NavbarProps> = ({ onLogout }) => {
   const tokenExists = localStorage.getItem('token');
-  console.log(tokenExists);
+  // console.log(tokenExists);
   return (
-    <nav className="bg-white shadow-md text-black">
+    <nav className="bg-white shadow-md text-black absolute w-full">
       <div className="container mx-auto p-4 flex justify-between items-center">
         <div className="text-xl font-semibold">Movie Bros</div>
 

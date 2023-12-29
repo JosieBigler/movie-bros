@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import  AuthProvider  from "./authProvider";
 import Navbar from "./components/Navbar";
 import Routes from "./routes/Routes";
@@ -6,6 +7,7 @@ import Routes from "./routes/Routes";
 function App() {
 
   const handleLogout = async () => {
+    console.log("handleLogout");
     const response = await axios({
       method: 'post',
       url: 'https://localhost:7097/logout',
@@ -20,10 +22,10 @@ function App() {
 
   return (
     <>
-      <Navbar onLogout={handleLogout} />
       <AuthProvider>
         <Routes />
       </AuthProvider>
+      <Navbar onLogout={handleLogout} />
     </>
   )
 }

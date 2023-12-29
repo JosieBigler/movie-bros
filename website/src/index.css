@@ -62,12 +62,12 @@ body {
 .the-bros {
   position: absolute;
   left: 50%; 
-  margin: 16vh auto;
+  margin: 24vh auto;
   transform: translate(-50%, 0);
   white-space: nowrap
 }
 .the-bros > * {
-  background-color: #ffffff;
+  background-color: #1b1b1b;
   border-radius: 5px;
   margin: .5em;
   padding: .5em 1em;
