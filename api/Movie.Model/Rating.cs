@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace MovieBros.Model
 {
-    public class Movie
+    public class Rating
     {
         public int Id { get; set; }
-        public string WhoPickedIt { get; set; }
-        public DateTime Watched { get; set; }
-        public string Mood { get; set; }
+        public int MovieId { get; set; }
+        public int UserId { get; set; }
+        public decimal Value { get; set; }
+        public DateTime DateRated { get; set; }
     }
 }
