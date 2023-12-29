@@ -18,6 +18,11 @@ builder.Services.AddDbContext<IdentityContext>(options =>
     options.UseMySql(connString, new MySqlServerVersion(new Version(8, 0, 34)));
 });
 
+builder.Services.AddDbContext<MovieContext>(options =>
+{
+    options.UseMySql(connString, new MySqlServerVersion(new Version(8, 0, 34)));
+});
+
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();

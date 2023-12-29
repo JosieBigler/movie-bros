@@ -8,8 +8,10 @@ namespace MovieBros.Model
 {
     public class Movie
     {
-        public int Id { get; set; }
-        public string WhoPickedIt { get; set; }
+        public Guid Id { get; set; }
+        public string Title { get; set; }
+        public int TMDBApiID { get; set; }
+        public Guid UserIdThatPicked { get; set; }
         public DateTime Watched { get; set; }
         public string Mood { get; set; }
     }

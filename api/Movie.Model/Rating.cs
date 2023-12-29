@@ -8,10 +8,10 @@ namespace MovieBros.Model
 {
     public class Rating
     {
-        public int Id { get; set; }
-        public int MovieId { get; set; }
-        public int UserId { get; set; }
-        public decimal Value { get; set; }
+        public Guid Id { get; set; }
+        public Guid MovieId { get; set; }
+        public Guid UserId { get; set; }
+        public float Value { get; set; }
         public DateTime DateRated { get; set; }
     }
 }
