@@ -67,7 +67,8 @@ body {
   white-space: nowrap
 }
 .the-bros > * {
-  background-color: #1b1b1b;
+  background-color: #f7f7f7;
+  color: #000;
   border-radius: 5px;
   margin: .5em;
   padding: .5em 1em;
