@@ -10,10 +10,19 @@ export const LoginPage : FC = () => {
     const navigate = useNavigate();
     console.log('page loaded');
 
+    const handleKeyDown = async (event : any) => {
+      if (event.key === 'Enter') {
+        handleLogin();
+      }
+    };
+
+    const handleSubmit = async (event: any) => {
+      event.preventDefault();
+      handleLogin();
+    }
     //make api call to login.
-    const handleLogin = (event: any) => {
-        event.preventDefault();
-        axios({
+    const handleLogin = async () => {
+        await axios({
             method: 'post',
             url: 'https://localhost:7097/login',
             withCredentials: true,
@@ -24,10 +33,11 @@ export const LoginPage : FC = () => {
                 email: userValue,
                 password: passwordValue
             }
-          }).then(promise => {
-            setToken('loggedIn');
-            navigate('/');
           });
+
+          
+          setToken('loggedIn');
+          navigate('/');
 
         
     };
@@ -63,6 +73,7 @@ export const LoginPage : FC = () => {
               id="password"
               value={passwordValue}
               onChange={(e) => setPasswordValue(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="********"
             />
           </div>
@@ -70,7 +81,7 @@ export const LoginPage : FC = () => {
           <button
             className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-300"
             type="button"
-            onClick={handleLogin}
+            onClick={handleSubmit}
           >
             Log In
           </button>
