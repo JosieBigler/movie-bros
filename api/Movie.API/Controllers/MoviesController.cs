@@ -13,9 +13,9 @@ namespace MovieBros.API.Controllers
     {
         public static List<Movie> Movies = new List<Movie>
         {
-            new Movie { Title = "Gundam", Description = "Anime one wiht robots", Id = 1 },
-            new Movie { Title = "Fortress", Description = "Early 90s scifi", Id = 2 },
-            new Movie { Title = "Dark City", Description = "Weird space vampireds", Id = 3 },
+            new Movie {Id = 2, Mood = "Dark"},
+            new Movie {Id = 3, Mood = "Dark"},
+            new Movie { Id = 1, Mood = "Dark"},
         };
 
         // GET: api/<MoviesController>
