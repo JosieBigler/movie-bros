@@ -11,8 +11,8 @@ let ssss = "1992";
 let sssss = "1h 35m";
 let ssssss = "Josie";
 
-let ddd = "User name";
-let dddd = "User rating";
+const ddd: string = 'User Name';
+let dddd: number = 0;
 
 interface Bro{
   name: string,
@@ -45,10 +45,11 @@ function Rate2() {
   function sayHello() {
     aaaa(aaa === imagesPath[0] ? imagesPath[1] : imagesPath[0])
   }
-  return <img className="always-filled opacity-60" src={aaa} onClick={sayHello}/>
+  return (<img className="always-filled opacity-60" src={aaa} onClick={sayHello}/>)
   
 }
 export const Rate = () => {
+  // console.log(user);
 return <>
   <div className="relative">
     <Rate2></Rate2>
@@ -65,9 +66,21 @@ return <>
 </>;};
 
 const Rate3 : React.FC<{bros : Bro[]}> = ({bros})  => {
+  const  [userName, setUserName] =  useState(String(ddd));
+  const  [userRating, setUserRating] =  useState(Number(dddd));
+  function sayHello2() {
+    setUserName('jkjkjk')
+  }
+  function sayHello3() {
+    setUserRating(8)
+  }
   return (
     <div className="the-bros">
-      <span><span>{ddd}</span><span>{dddd}</span></span>
+      <span className="cursor-pointer">
+        <span>{userName}</span>
+        <span className="">{userRating}</span>
+        <input></input>
+        </span>
       {
         bros.map(x => {
           return <span><span>{x.name}</span><span>{x.rating}</span></span>
