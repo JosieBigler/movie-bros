@@ -3,11 +3,13 @@ import { useAuth } from "../authProvider";
 
 
 export const ProtectedRoute = () => {
+  console.log("ProtectedRoute")
     const { token } = useAuth();
   
     // Check if the user is authenticated
     if (!token) {
       // If not authenticated, redirect to the login page
+      console.log("to login")
       return <Navigate to="/login" />;
     }
   

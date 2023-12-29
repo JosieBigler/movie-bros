@@ -8,7 +8,7 @@ export const LoginPage : FC = () => {
     const  [passwordValue, setPasswordValue] =  useState('');
     const { setToken } = useAuth();
     const navigate = useNavigate();
-    console.log('page loaded');
+    console.log('LoginPage loaded');
 
     const handleKeyDown = async (event : any) => {
       if (event.key === 'Enter') {
@@ -44,7 +44,7 @@ export const LoginPage : FC = () => {
 
     return (
     <>
-        <div className="flex items-center justify-center h-screen">
+        <div className="flex items-center justify-center h-screen text-black">
       <div className="bg-white p-8 rounded shadow-md w-96">
         <h2 className="text-2xl font-bold mb-6">Login</h2>
 
