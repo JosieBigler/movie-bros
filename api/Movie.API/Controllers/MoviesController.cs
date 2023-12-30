@@ -13,9 +13,9 @@ namespace MovieBros.API.Controllers
     {
         public static List<Movie> Movies = new List<Movie>
         {
-            new Movie {Id = 2, Mood = "Dark"},
-            new Movie {Id = 3, Mood = "Dark"},
-            new Movie { Id = 1, Mood = "Dark"},
+            new Movie {Id = Guid.NewGuid(), Mood = "Dark"},
+            new Movie {Id = Guid.NewGuid(), Mood = "Dark"},
+            new Movie { Id = Guid.NewGuid(), Mood = "Dark"},
         };
 
         // GET: api/<MoviesController>
@@ -27,7 +27,7 @@ namespace MovieBros.API.Controllers
 
         // GET api/<MoviesController>/5
         [HttpGet("{id}")]
-        public Movie Get(int id)
+        public Movie Get(Guid id)
         {
             return Movies.FirstOrDefault(x => x.Id == id);
         }
@@ -41,7 +41,7 @@ namespace MovieBros.API.Controllers
 
         // PUT api/<MoviesController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Movie movie)
+        public void Put(Guid id, [FromBody] Movie movie)
         {
             var remove = Movies.Find(x => x.Id == id);
             Movies.Remove(remove);
@@ -50,7 +50,7 @@ namespace MovieBros.API.Controllers
 
         // DELETE api/<MoviesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             var remove = Movies.Find(x => x.Id == id);
             Movies.Remove(remove);

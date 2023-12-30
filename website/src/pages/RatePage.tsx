@@ -1,6 +1,7 @@
 
 import axios from "axios";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 
 let imagesPath: string[] = [
   'https://www.themoviedb.org/t/p/original/5C5oQtJ50Vg2qoVTp9XjNPyqZlq.jpg', 
@@ -29,18 +30,31 @@ const Bros : Bro[] = [
   },
 ]
 
-const testApiCall = () => {
-  axios({
+
+
+const testRate = async () => {
+  let result = await axios({
+    method: 'POST',
+    url: 'https://localhost:7097/api/Ratings',
+    withCredentials: true,
+    data: {
+      movieId: 'a660d18a-fc15-4de0-8ab9-9871f63506a8',
+      value: 1.2,
+    }
+  });
+}
+
+const testApiCall = async () => {
+  let result = axios({
     method: 'get',
     url: 'https://localhost:7097/api/Movies',
     withCredentials: true
-  }).then(promise => {
-    // console.log(promise);
   });
 }
 
 function Rate2() {
   testApiCall();
+  testRate();
   const [aaa, aaaa] = useState(imagesPath[0])
   function sayHello() {
     aaaa(aaa === imagesPath[0] ? imagesPath[1] : imagesPath[0])
@@ -49,6 +63,8 @@ function Rate2() {
   
 }
 export const Rate = () => {
+  
+
   // console.log(user);
 return <>
   <div className="relative">
@@ -66,6 +82,36 @@ return <>
 </>;};
 
 const Rate3 : React.FC<{brosParam : Bro[]}> = ({brosParam})  => {
+  const [connection, setConnection] = useState<null | HubConnection>(null);
+
+  useEffect(() => {
+    const connect = new HubConnectionBuilder()
+      .withUrl("https://localhost:7097/hubs/rating")
+      .withAutomaticReconnect()
+      .build();
+  
+    setConnection(connect);
+  }, []);
+
+  useEffect(() => {
+    if (connection) {
+      connection
+        .start()
+        .then(() => {
+          connection.on("ReceiveMessage", (message) => {
+            console.log('Message REceived from SignalR');
+            //Set the rating from within here? 
+            console.log(message);
+          });
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [connection]);
+
+  const sendMessage = async () => {
+    console.log('clicked send message');
+    if (connection) await connection.send("SendMessage", { movieId: 'a660d18a-fc15-4de0-8ab9-9871f63506a8', value: 5.5 });
+  };
   const  userName = ddd;
   let  aaaa = 0;
   const  [userRating, setUserRating] =  useState(Number(dddd));
@@ -80,6 +126,8 @@ const Rate3 : React.FC<{brosParam : Bro[]}> = ({brosParam})  => {
   }
   return (
     <div className="the-bros">
+      
+    <button onClick={sendMessage}>Send Message</button>
       <span className="cursor-pointer" onClick={sayHello3}>
         { isRated ? (
           <><span>{userName}</span>
