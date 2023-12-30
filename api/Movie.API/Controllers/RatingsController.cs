@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using MovieBro.API.DTO;
 using MovieBros.Data;
 using MovieBros.Model;
@@ -22,7 +23,7 @@ namespace MovieBro.API.Controllers
         }
 
         [HttpPost]
-        public ApiResult Index(RatingDTO dto)
+        public async Task<ApiResult> IndexAsync(RatingDTO dto)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             if (userId is null) return new ApiResult { Success = false, Message = "User not found" };

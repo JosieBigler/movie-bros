@@ -2,6 +2,7 @@ using MovieBros.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using MovieBro.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +24,12 @@ builder.Services.AddDbContext<MovieContext>(options =>
     options.UseMySql(connString, new MySqlServerVersion(new Version(8, 0, 34)));
 });
 
+builder.Services.AddScoped<RatingHub>();
+
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 builder.Services.AddCors(options =>
 {
@@ -65,6 +69,8 @@ app.MapPost("/logout", async (SignInManager<IdentityUser> signInManager) =>
     await signInManager.SignOutAsync().ConfigureAwait(false);
 });
 
+
+app.MapHub<RatingHub>(pattern: "/hubs/rating");
 app.MapControllers();
 
 app.Run();
