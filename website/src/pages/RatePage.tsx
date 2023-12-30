@@ -11,8 +11,8 @@ let ssss = "1992";
 let sssss = "1h 35m";
 let ssssss = "Josie";
 
-let ddd = "User name";
-let dddd = "User rating";
+const ddd: string = 'User Name';
+let dddd: number = 0;
 
 interface Bro{
   name: string,
@@ -60,10 +60,11 @@ function Rate2() {
   function sayHello() {
     aaaa(aaa === imagesPath[0] ? imagesPath[1] : imagesPath[0])
   }
-  return <img className="always-filled opacity-60" src={aaa} onClick={sayHello}/>
+  return (<img className="always-filled opacity-60" src={aaa} onClick={sayHello}/>)
   
 }
 export const Rate = () => {
+  // console.log(user);
 return <>
   <div className="relative">
     <Rate2></Rate2>
@@ -75,17 +76,37 @@ return <>
         <p className="[&>*]:pr-4"><span>{ssss}</span><span>{sssss}</span><span>{ssssss}</span></p>
       </div>
     </div>
-    <Rate3 bros={Bros}></Rate3>
+    <Rate3 brosParam={Bros}></Rate3>
   </div>
 </>;};
 
-const Rate3 : React.FC<{bros : Bro[]}> = ({bros})  => {
+const Rate3 : React.FC<{brosParam : Bro[]}> = ({brosParam})  => {
+  const  userName = ddd;
+  let  aaaa = 0;
+  const  [userRating, setUserRating] =  useState(Number(dddd));
+  const  [isRated, setisRated] =  useState(dddd === 0 ? false : true);
+  function sayHello3() {
+    setUserRating(8);
+    setisRated(true);
+  }
+  const  [bros, setbros] =  useState(brosParam);
+  function sayHello2() {
+    setbros([ ...bros, {name: "New", rating: 10 } ]);
+  }
   return (
     <div className="the-bros">
-      <span><span>{ddd}</span><span>{dddd}</span></span>
-      {
+      <span className="cursor-pointer" onClick={sayHello3}>
+        { isRated ? (
+          <><span>{userName}</span>
+          <span>{userRating}</span></>
+        ) : (
+          <span>Click to rate</span>
+        )}
+      </span>
+      <span className="cursor-pointer" onClick={sayHello2}>Add Bro</span>
+      { 
         bros.map(x => {
-          return <span><span>{x.name}</span><span>{x.rating}</span></span>
+          return <span  key={aaaa++}><span>{x.name}</span><span>{x.rating}</span></span>
         })
       }
     </div>
