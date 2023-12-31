@@ -125,9 +125,9 @@ const Rate3 : React.FC<{brosParam : Bro[]}> = ({brosParam})  => {
     setbros([ ...bros, {name: "New", rating: 10 } ]);
   }
   return (
-    <div className="the-bros">
-      
-    <button onClick={sendMessage}>Send Message</button>
+    <div className="the-bros container">
+      <button onClick={sendMessage}>Send Message</button>
+      <RateBubble DisplayName={userName} RatingValue={userRating}></RateBubble>
       <span className="cursor-pointer" onClick={sayHello3}>
         { isRated ? (
           <><span>{userName}</span>
@@ -139,9 +139,23 @@ const Rate3 : React.FC<{brosParam : Bro[]}> = ({brosParam})  => {
       <span className="cursor-pointer" onClick={sayHello2}>Add Bro</span>
       { 
         bros.map(x => {
-          return <span  key={aaaa++}><span>{x.name}</span><span>{x.rating}</span></span>
+          // return <span  key={aaaa++}><span>{x.name}</span><span>{x.rating}</span></span>
+          return <RateBubble  key={aaaa++} DisplayName={x.name} RatingValue={x.rating}></RateBubble>
         })
       }
     </div>
+  )
+}
+const RateBubble : React.FC<{DisplayName : string, RatingValue : number}> = ({DisplayName, RatingValue})  => {
+  return (
+    <span className="">
+      <div className="flex items-center">
+        <span className="ttt2">{Array.from(DisplayName)[0]}{Array.from(DisplayName)[1]}</span>
+        <span className="grow ml-2">
+          <div className="tracking-wider text-sm font-semibold">{DisplayName}'s Rating</div>
+          <div>{RatingValue}</div>
+        </span>
+      </div>
+    </span>
   )
 }

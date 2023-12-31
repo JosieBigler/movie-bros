@@ -4,6 +4,10 @@
 
 :root {
   --prussian-blue: #002547;
+  /* --prussian-blue: #002c53; */
+  /* --Mystic: #eaeff1; */
+  /* --Judge Gray: #4b3d2a ; */
+  /* --Soooo-Bloody: #530003; */
   /* --prussian-blue: #0C3457ff; */
 }
 
@@ -41,16 +45,16 @@ body {
   margin-left: 0;
   padding: 64vh 0 0;
   position: absolute;
-  animation: 0.5s ease-in 0s 1 slideInFromLeft;
+  animation: 0.5s ease-out 0s 1 slideInFromLeft;
 }
 @keyframes slideInFromLeft {
   0% {
     transform: translateX(-1%);
-    opacity: 0.0;
+    /* opacity: 0.4; */
   }
   100% {
     transform: translateX(0);
-    opacity: 1.0;
+    /* opacity: 0.6; */
   }
 }
 .ttt1 {
@@ -67,9 +71,37 @@ body {
   white-space: nowrap
 }
 .the-bros > * {
-  background-color: #f7f7f7;
+  pointer-events: auto;
+  background-color: #eaeff162;
+  backdrop-filter: blur(32px);
   color: #000;
   border-radius: 5px;
   margin: .5em;
-  padding: .5em 1em;
+  padding: .5em .5em;
+  text-align: center;
+  width: max-content;
+}
+.the-bros {
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(auto-fill, auto);
+  grid-row-gap: .5em;
+  grid-column-gap: 1em;
+  justify-items: center;
+}
+@media only screen and (min-aspect-ratio: 5/4) {
+  .the-bros {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.ttt2 {
+  width: 48px;
+  padding: 4px;
+  border-radius: 30%;
+  color: rgb(239, 239, 239);
+  font-size: 1.75rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  background-image: linear-gradient(to bottom right,  #17110a 0%,  #00203e 60%,  var(--prussian-blue)100%);
 }
