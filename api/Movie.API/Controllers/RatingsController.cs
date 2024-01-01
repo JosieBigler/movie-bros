@@ -15,11 +15,13 @@ namespace MovieBro.API.Controllers
     {
         public readonly MovieContext _movieContext;
         public readonly UserManager<IdentityUser> _userManager;
+        public readonly IdentityContext _identityContext;
 
-        public RatingsController(MovieContext movieContext, UserManager<IdentityUser> userManager)
+        public RatingsController(MovieContext movieContext, UserManager<IdentityUser> userManager, IdentityContext identityContext)
         {
             _movieContext = movieContext;
             _userManager = userManager;
+            _identityContext = identityContext;
         }
 
         [HttpPost]
@@ -37,8 +39,40 @@ namespace MovieBro.API.Controllers
             };
 
             _movieContext.Rating.Add(rating);
-            _movieContext.SaveChanges();
+            await _movieContext.SaveChangesAsync();
             return new ApiResult();
+        }
+
+        [HttpGet]
+        [Route("{movieId}")]
+        public async Task<RatingsApiResult> Ratings(Guid movieId)
+        {
+            var ratings = _movieContext.Rating.Where(x => x.MovieId == movieId).ToList();
+            var userIds = ratings.Select(x => x.UserId.ToString()).ToList();
+            var users = _identityContext.Users.Where( x => userIds.Contains(x.Id) ).ToList();
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            var results = new List<GetRatingsResponse>();
+            foreach ( var rating in ratings )
+            {
+                results.Add(new GetRatingsResponse()
+                {
+                    MovieId= rating.MovieId,
+                    Rating = rating.Value,
+                    UserName = users.FirstOrDefault(x => x.Id == rating.UserId.ToString())?.UserName ?? "User Name not found"
+                });
+            }
+
+            var response = new RatingsApiResult
+            {
+                Data = results,
+                HaveRated = ratings.Any(x => x.UserId.ToString() == user?.Id),
+                Message = "",
+                Success = true
+            };
+
+            return response;
+
         }
     }
 }
