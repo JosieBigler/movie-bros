@@ -72,9 +72,9 @@ return <>
     {/* <img className="always-filled opacity-60" src={jjj} onClick={sayHello}/> */}
     {/* <div className="up-shadow"></div> */}
     <div className="pointer-events-none details">
-      <div className="ttt1 relative">
+      <div className="details-bg relative">
         <h2 className="tracking-wide text-4xl font-semibold uppercase">{sss}</h2>
-        <p className="[&>*]:pr-4"><span>{ssss}</span><span>{sssss}</span><span>{ssssss}</span></p>
+        <p className="[&>*]:pr-4 text-fortress-grey"><span>{ssss}</span><span>{sssss}</span><span>{ssssss}</span></p>
       </div>
     </div>
     <Rate3 brosParam={Bros}></Rate3>
@@ -150,10 +150,10 @@ const RateBubble : React.FC<{DisplayName : string, RatingValue : number}> = ({Di
   return (
     <span className="">
       <div className="flex items-center">
-        <span className="ttt2">{Array.from(DisplayName)[0]}{Array.from(DisplayName)[1]}</span>
+        <span className="user-initials">{Array.from(DisplayName)[0]}{Array.from(DisplayName)[1]}</span>
         <span className="grow ml-2">
-          <div className="tracking-wider text-sm font-semibold">{DisplayName}'s Rating</div>
-          <div>{RatingValue}</div>
+          <div className="tracking-wider text-fortress-grey text-sm font-semibold">{DisplayName}'s Rating</div>
+          <div className="text-white">{RatingValue}<span className="text-fortress-grey text-xs">/10</span></div>
         </span>
       </div>
     </span>

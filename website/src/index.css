@@ -4,11 +4,16 @@
 
 :root {
   --prussian-blue: #002547;
-  /* --prussian-blue: #002c53; */
+  /* --prussian-blue: #002c53; 1a1711*/
   /* --Mystic: #eaeff1; */
   /* --Judge Gray: #4b3d2a ; */
-  /* --Soooo-Bloody: #530003; */
-  /* --prussian-blue: #0C3457ff; */
+  --Soooo-Bloody: #530003;
+  /* --Spring-Wood: #f7f5f1; */
+  /* --Pearl-Bush: #e5dfd2; 1A1A1Aab*/
+  --Eerie-Black: #1a1a1a; 
+  --Eerie-Black-66: #1A1A1Aab; 
+  --Gainsboro: #dadada;
+  --Fortress-Grey: #b7b7b7;
 }
 
 html,
@@ -16,8 +21,12 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  color: var(--Gainsboro);
   background-color: var(--prussian-blue);
   overflow: hidden;
+}
+.text-fortress-grey {
+  color: var(--Fortress-Grey);
 }
 .always-filled {
   /* Needs to be inside position: relative; and accompanied by a @media */
@@ -57,11 +66,10 @@ body {
     /* opacity: 0.6; */
   }
 }
-.ttt1 {
+.details-bg {
   padding: .2em 6vw .4em;
   text-shadow: 0 1px 2px #000;
-  color: #dedede;
-  background-image: linear-gradient(to right,  #17110a , rgba(255, 255, 0, 0));
+  background-image: linear-gradient(70deg,  var(--Eerie-Black)0%, rgba(0, 0, 0, 0)90%);
 }
 .the-bros {
   position: absolute;
@@ -72,9 +80,8 @@ body {
 }
 .the-bros > * {
   pointer-events: auto;
-  background-color: #eaeff162;
+  background-color: var(--Eerie-Black-66);
   backdrop-filter: blur(32px);
-  color: #000;
   border-radius: 5px;
   margin: .5em;
   padding: .5em .5em;
@@ -95,11 +102,10 @@ body {
     grid-template-columns: repeat(4, 1fr);
   }
 }
-.ttt2 {
+.user-initials {
   width: 48px;
   padding: 4px;
   border-radius: 30%;
-  color: rgb(239, 239, 239);
   font-size: 1.75rem;
   line-height: 2.5rem;
   font-weight: 700;
