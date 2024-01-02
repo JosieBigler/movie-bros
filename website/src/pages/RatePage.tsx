@@ -44,6 +44,24 @@ const testRate = async () => {
   });
 }
 
+const testRate2 = async () => {
+  //let result2 = await axios.get('https://localhost:7097/api/Ratings/a660d18a-fc15-4de0-8ab9-9871f63506a8', { withCredentials: true });
+  // let result = await axios({
+  //   method: 'GET',
+  //   url: 'https://localhost:7097/api/Ratings/a660d18a-fc15-4de0-8ab9-9871f63506a8',
+  //   withCredentials: true,
+  //   withXSRFToken: true
+  // });
+
+  let response = await fetch('https://localhost:7097/api/Ratings/a660d18a-fc15-4de0-8ab9-9871f63506a8', {
+    method: 'GET',
+    credentials: 'include'
+  });
+  let payload = response.json();
+  console.log(payload);
+  //console.log(result2);
+}
+
 const testApiCall = async () => {
   let result = axios({
     method: 'get',
@@ -110,7 +128,8 @@ const Rate3 : React.FC<{brosParam : Bro[]}> = ({brosParam})  => {
 
   const sendMessage = async () => {
     console.log('clicked send message');
-    if (connection) await connection.send("SendMessage", { movieId: 'a660d18a-fc15-4de0-8ab9-9871f63506a8', value: 5.5 });
+    await testRate2();
+    // if (connection) await connection.send("SendMessage", { movieId: 'a660d18a-fc15-4de0-8ab9-9871f63506a8', value: 5.5 });
   };
   const  userName = ddd;
   let  aaaa = 0;
