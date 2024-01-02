@@ -1,35 +1,40 @@
 import { Movie } from "../model/movie";
 
-export interface IApi {
-    getMovies(): Promise<Movie[]>
-    getmovie(id: number): Promise<Movie>
+const url = 'https://localhost:7097';
+
+const apiService = {
+    
+
+    //post a rating
+    //a660d18a-fc15-4de0-8ab9-9871f63506a8
+    getMovieRatings: async (movieId: string) : Promise<any> => {
+        let response = await fetch(url + '/api/Ratings/' + movieId, {
+            method: 'GET',
+            credentials: 'include'
+            });
+        return response.json();
+    },
+
+    //get ratings
+    rateMovie: async (movieId: string, rating: number) => {
+        let response = await fetch(url + '/api/Ratings', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({ movieId, value: rating})
+        })
+        return response.json();
+    },
+
+    //get identity
+
+    //get movies?
+    getMovies: async () : Promise<any> => {
+        let response = await fetch(url + '/api/Movies' {
+            method: 'GET',
+            credentials: 'include'
+            });
+        return response.json();
+    }
 }
 
-export class ApiService implements IApi {
-    /**
-     *
-     */
-    private _apiUrl: string;
-    private _headers: Headers;
-    constructor(apiUrl: string) {
-        this._apiUrl = apiUrl + "/api/movies";
-        this._headers = new Headers();
-        this._headers.append("Content-Type", "application/json");
-    }
-
-    public setToken(token: string) {
-        this._headers.set("Authorization", `Bearer: ${token}`);
-    }
-
-    public async getMovies(): Promise<Movie[]> {
-        const response = await fetch(this._apiUrl, { headers: this._headers });
-        const movies = await response.json();
-        return movies;
-    }
-
-    public async getmovie(id: number): Promise<Movie> {
-        const response = await fetch(`${this._apiUrl}/${id}`, { headers: this._headers });
-        const movie = await response.json();
-        return movie;
-    }
-}
+export default apiService;
