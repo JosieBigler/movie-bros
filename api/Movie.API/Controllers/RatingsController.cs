@@ -47,8 +47,8 @@ namespace MovieBro.API.Controllers
         [Route("{movieId}")]
         public async Task<RatingsApiResult> Ratings(Guid movieId)
         {
-            var ratings = _movieContext.Rating.Where(x => x.MovieId == movieId).ToList();
-            var userIds = ratings.Select(x => x.UserId.ToString()).ToList();
+            var ratings = _movieContext.Rating.Where(x => x.MovieId == movieId).Distinct().ToList();
+            var userIds = ratings.Select(x => x.UserId.ToString()).Distinct().ToList();
             var users = _identityContext.Users.Where( x => userIds.Contains(x.Id) ).ToList();
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
