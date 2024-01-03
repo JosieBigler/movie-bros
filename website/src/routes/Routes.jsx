@@ -1,7 +1,7 @@
 import { RouterProvider, createBrowserRouter, Navigate } from "react-router-dom";
 import { useAuth } from "../authProvider";
 import { ProtectedRoute } from "./ProtectedRoutes";
-import { Rate } from "../pages/RatePage";
+import { RatingPage } from "../pages/RatePage";
 import { LoginPage } from "../pages/LoginPage";
 import Logout from "../pages/LogoutPage";
 
@@ -28,7 +28,7 @@ const Routes = () => {
       children: [
         {
           path: "/",
-          element: <Rate></Rate>,
+          element: <RatingPage></RatingPage>,
         },
         {
           path: "/logout",

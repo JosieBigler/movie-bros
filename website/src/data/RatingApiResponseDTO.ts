@@ -2,7 +2,7 @@ import { ApiResponse } from "./ApiResponseDTO";
 
 export interface RatingApiResponseDTO extends ApiResponse
 {
-    daveRated : boolean,
+    haveRated : boolean,
     data: RatingResponseDTO[]
 }
 
