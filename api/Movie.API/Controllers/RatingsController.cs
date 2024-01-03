@@ -47,25 +47,27 @@ namespace MovieBro.API.Controllers
         [Route("{movieId}")]
         public async Task<RatingsApiResult> Ratings(Guid movieId)
         {
-            var ratings = _movieContext.Rating.Where(x => x.MovieId == movieId).Distinct().ToList();
-            var userIds = ratings.Select(x => x.UserId.ToString()).Distinct().ToList();
+            var ratings = _movieContext.Rating.Where(x => x.MovieId == movieId).ToList();
+            var userIds = ratings.Select(x => x.UserId.ToString()).ToList();
             var users = _identityContext.Users.Where( x => userIds.Contains(x.Id) ).ToList();
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
             var results = new List<GetRatingsResponse>();
             foreach ( var rating in ratings )
             {
+                var userName = users.FirstOrDefault(x => x.Id == rating.UserId.ToString())?.UserName ?? "User Name not found";
+                if (results.Any(x => x.UserName == userName)) continue;
                 results.Add(new GetRatingsResponse()
                 {
                     MovieId= rating.MovieId,
                     Rating = rating.Value,
-                    UserName = users.FirstOrDefault(x => x.Id == rating.UserId.ToString())?.UserName ?? "User Name not found"
+                    UserName = userName
                 });
             }
 
             var response = new RatingsApiResult
             {
-                Data = results,
+                Data = results.Distinct(),
                 HaveRated = ratings.Any(x => x.UserId.ToString() == user?.Id),
                 Message = "",
                 Success = true

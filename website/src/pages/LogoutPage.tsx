@@ -22,14 +22,10 @@ const Logout = () => {
   const handleLogout = () => {
     serverLogout();
     setToken();
-    //navigate("/", { replace: true });
+    navigate("/", { replace: true });
   };
 
-  setTimeout(() => {
-    handleLogout();
-  }, 3 * 1000);
-
-  return <>Logout Page</>;
+  return <></>;
 };
 
 export default Logout;
