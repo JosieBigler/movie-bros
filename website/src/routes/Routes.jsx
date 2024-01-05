@@ -4,8 +4,10 @@ import { ProtectedRoute } from "./ProtectedRoutes";
 import { RatingPage } from "../pages/RatePage";
 import { LoginPage } from "../pages/LoginPage";
 import Logout from "../pages/LogoutPage";
+import Navbar from "../components/Navbar";
+import Layout from "../components/Layout";
 
-const Routes = () => {
+const Routes = (props) => {
   const { token } = useAuth();
 
   // Define public routes accessible to all users
@@ -24,11 +26,11 @@ const Routes = () => {
   const routesForAuthenticatedOnly = [
     {
       path: "/",
-      element: <ProtectedRoute />, // Wrap the component in ProtectedRoute
+      element: <ProtectedRoute ></ProtectedRoute>, // Wrap the component in ProtectedRoute
       children: [
         {
           path: "/",
-          element: <RatingPage movieId='a660d18a-fc15-4de0-8ab9-9871f63506a8'></RatingPage>,
+          element: <><RatingPage movieId='a660d18a-fc15-4de0-8ab9-9871f63506a8'></RatingPage></>,
         },
         {
           path: "/logout",
@@ -58,7 +60,7 @@ const Routes = () => {
   ]);
 
   // Provide the router configuration using RouterProvider
-  return <RouterProvider router={router} />;
+  return <RouterProvider router={router}><Layout>{props.children}</Layout></RouterProvider>;
 };
 
 export default Routes;

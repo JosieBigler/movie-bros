@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import apiService from "../data/ApiService";
 import { RatingResponseDTO } from "../data/RatingApiResponseDTO";
@@ -22,7 +22,11 @@ function MovieBackgroundImage() {
   function sayHello() {
     aaaa(aaa === imagesPath[0] ? imagesPath[1] : imagesPath[0])
   }
-  return (<img className="always-filled opacity-60" src={aaa} onClick={sayHello}/>)
+
+  const myStyle = {
+    backgroundImage: "url('https://www.themoviedb.org/t/p/original/5C5oQtJ50Vg2qoVTp9XjNPyqZlq.jpg')"
+  }
+  return (<img style={myStyle} src={aaa} onClick={sayHello}/>)
   
 }
 
@@ -38,7 +42,6 @@ export const RatingPage = ({movieId} : ratingProps) => {
   
   return <>
     <div className="relative">
-      <MovieBackgroundImage></MovieBackgroundImage>
       <div className="pointer-events-none details">
         <div className="ttt1 relative">
           <h2 className="tracking-wide text-4xl font-semibold uppercase">{movieTitle}</h2>

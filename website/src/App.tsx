@@ -6,26 +6,13 @@ import Routes from "./routes/Routes";
 
 function App() {
 
-  const handleLogout = async () => {
-    console.log("handleLogout");
-    const response = await axios({
-      method: 'post',
-      url: 'https://localhost:7097/logout',
-      withCredentials: true,
-      params: {
-          useCookies: 'true'
-      },
-    });
-
-    console.log(response);
-  };
-
   return (
     <>
       <AuthProvider>
-        <Routes />
+        <Routes>
+          <Navbar  />
+        </Routes>
       </AuthProvider>
-      <Navbar onLogout={handleLogout} />
     </>
   )
 }

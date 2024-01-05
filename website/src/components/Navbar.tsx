@@ -1,10 +1,15 @@
 import { FC } from 'react';
+import { useNavigate } from "react-router-dom";
 
 interface NavbarProps {
   onLogout: () => void;
 }
 
-const Navbar: FC<NavbarProps> = ({ onLogout }) => {
+const Navbar: FC = () => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate('/logout');
+  }
   const tokenExists = localStorage.getItem('token');
   // console.log(tokenExists);
   return (
@@ -16,7 +21,7 @@ const Navbar: FC<NavbarProps> = ({ onLogout }) => {
             {tokenExists &&
                 <button
                     className="text-gray-600 hover:text-gray-800 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
-                    onClick={onLogout}
+                    onClick={handleClick}
                 >
                     Logout
                 </button>

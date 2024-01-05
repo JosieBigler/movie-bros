@@ -1,11 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../authProvider";
 import axios from "axios";
+import { useEffect } from "react";
 
 const Logout = () => {
   const { setToken } = useAuth();
   const navigate = useNavigate();
 
+   useEffect(() => {
+    handleLogout();
+   });
 
   const serverLogout = async () => {
     const response = await axios({
