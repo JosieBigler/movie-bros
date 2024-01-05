@@ -120,7 +120,7 @@ const Ratings : React.FC<{ movieId : string}> = (props)  => {
         </div> 
         :
         <div>
-
+          You have not rated, you can not see the ratings.
         </div>
       }
       
