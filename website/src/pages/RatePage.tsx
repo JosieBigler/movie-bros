@@ -13,6 +13,9 @@ const movieYear = "1992";
 const movieDuration = "1h 35m";
 const moviePicker = "Josie";
 
+interface ratingProps {
+  movieId : string
+}
 
 function MovieBackgroundImage() {
   const [aaa, aaaa] = useState(imagesPath[0])
@@ -30,7 +33,7 @@ function MovieBackgroundImage() {
 // 4: if No, hide the ratings until user rates.
 // 5: When user rates -> send to DB -> send to hub -> update internal state of Rating.
 
-export const RatingPage = (props :string) => {
+export const RatingPage = ({movieId} : ratingProps) => {
 
   
   return <>
@@ -42,25 +45,28 @@ export const RatingPage = (props :string) => {
           <p className="[&>*]:pr-4"><span>{movieYear}</span><span>{movieDuration}</span><span>{moviePicker}</span></p>
         </div>
       </div>
-      <Ratings movieId={props}></Ratings>
+      <Ratings movieId={movieId}></Ratings>
     </div>
   </>;
 };
 
-const Ratings : React.FC<{ movieId : string}> = (props)  => {
+const Ratings  = ({movieId} : ratingProps)  => {
 
   const [connection, setConnection] = useState<null | HubConnection>(null);
   const [userName, setUserName ] = useState("");
   const  [ratings, setRatings] =  useState<RatingResponseDTO[]>([]);
   const [haveRated, setHaveRated] = useState(false);
+  const [rating, setRating] = useState(0);
 
 
   useEffect(() => {
     apiService.getIdentity();
 
     const fetchData = async () => {
+      console.log(movieId);
+
       const identity = await apiService.getIdentity();
-      const data = await apiService.getMovieRatings(props.movieId);
+      const data = await apiService.getMovieRatings(movieId);
       setRatings(data.data);
       setHaveRated(data.haveRated); 
       setUserName(identity.data);
@@ -89,9 +95,10 @@ const Ratings : React.FC<{ movieId : string}> = (props)  => {
     }
   }, [connection]);
 
-  const rateMovie = async (rate : RatingResponseDTO) => {
+  const rateMovie = async () => {
 
     //update internal state. 
+    const rate = { userName, rating, movieId: props.movieId}
     setRatings(prevState => [...prevState, rate]);
     setHaveRated(true);
     
@@ -120,7 +127,8 @@ const Ratings : React.FC<{ movieId : string}> = (props)  => {
         </div> 
         :
         <div>
-          You have not rated, you can not see the ratings.
+          <input value={rating} />
+          <button onClick={rateMovie}>Submit</button>
           
         </div>
       }
