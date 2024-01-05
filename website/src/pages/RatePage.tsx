@@ -4,14 +4,14 @@ import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import apiService from "../data/ApiService";
 import { RatingResponseDTO } from "../data/RatingApiResponseDTO";
 
-let imagesPath: string[] = [
+const imagesPath: string[] = [
   'https://www.themoviedb.org/t/p/original/5C5oQtJ50Vg2qoVTp9XjNPyqZlq.jpg', 
   'https://www.themoviedb.org/t/p/original/tPu7eaHFcWCewPuL9ULMC9AoHPr.jpg'
 ];
-let movieTitle = "Fortress";
-let movieYear = "1992";
-let movieDuration = "1h 35m";
-let moviePicker = "Josie";
+const movieTitle = "Fortress";
+const movieYear = "1992";
+const movieDuration = "1h 35m";
+const moviePicker = "Josie";
 
 
 function MovieBackgroundImage() {
@@ -23,7 +23,15 @@ function MovieBackgroundImage() {
   
 }
 
-export const RatingPage = () => {
+// order of operation: 
+// 1: get the ratings for the current movie. 
+// 2: Check to see if current logged in user has rated. 
+// 3: If yes, don't do shit. 
+// 4: if No, hide the ratings until user rates.
+// 5: When user rates -> send to DB -> send to hub -> update internal state of Rating.
+
+export const RatingPage = (props :string) => {
+
   
   return <>
     <div className="relative">
@@ -34,20 +42,19 @@ export const RatingPage = () => {
           <p className="[&>*]:pr-4"><span>{movieYear}</span><span>{movieDuration}</span><span>{moviePicker}</span></p>
         </div>
       </div>
-      <Ratings></Ratings>
+      <Ratings movieId={props}></Ratings>
     </div>
   </>;
 };
 
-const Ratings : React.FC = ()  => {
+const Ratings : React.FC<{ movieId : string}> = (props)  => {
 
-  
-  const movieId = 'a660d18a-fc15-4de0-8ab9-9871f63506a8';
   const [connection, setConnection] = useState<null | HubConnection>(null);
   const [userName, setUserName ] = useState("");
   const  [userRating, setUserRating] =  useState(Number(1));
   const  [isRated, setisRated] =  useState(false);
-  const  [ratings, setRatings] =  useState<RatingResponseDTO[]>();
+  const  [ratings, setRatings] =  useState<RatingResponseDTO[]>([]);
+  const [haveRated, setHaveRated] = useState(false);
 
 
   useEffect(() => {
@@ -55,7 +62,7 @@ const Ratings : React.FC = ()  => {
 
     const fetchData = async () => {
       const identity = await apiService.getIdentity();
-      const data = await apiService.getMovieRatings(movieId);
+      const data = await apiService.getMovieRatings(props.movieId);
       setRatings(data.data);
       setisRated(data.haveRated); 
       setUserName(identity.data);
@@ -84,6 +91,19 @@ const Ratings : React.FC = ()  => {
     }
   }, [connection]);
 
+  const rateMovie = async (rate : RatingResponseDTO) => {
+
+    //update internal state. 
+    setRatings(prevState => [...prevState, rate]);
+    setHaveRated(true);
+    
+    //send to database.
+    apiService.rateMovie(props.movieId, rate.rating);
+
+    //send to Hub. 
+    connection.send("ReceiveMessage", rate);
+  }
+  
   const sendMessage = async () => {
     console.log('clicked send message');
     let rating = await apiService.getMovieRatings('a660d18a-fc15-4de0-8ab9-9871f63506a8');

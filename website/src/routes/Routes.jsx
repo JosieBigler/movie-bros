@@ -28,7 +28,7 @@ const Routes = () => {
       children: [
         {
           path: "/",
-          element: <RatingPage></RatingPage>,
+          element: <RatingPage movieId='a660d18a-fc15-4de0-8ab9-9871f63506a8'></RatingPage>,
         },
         {
           path: "/logout",
