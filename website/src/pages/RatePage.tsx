@@ -51,8 +51,6 @@ const Ratings : React.FC<{ movieId : string}> = (props)  => {
 
   const [connection, setConnection] = useState<null | HubConnection>(null);
   const [userName, setUserName ] = useState("");
-  const  [userRating, setUserRating] =  useState(Number(1));
-  const  [isRated, setisRated] =  useState(false);
   const  [ratings, setRatings] =  useState<RatingResponseDTO[]>([]);
   const [haveRated, setHaveRated] = useState(false);
 
@@ -64,7 +62,7 @@ const Ratings : React.FC<{ movieId : string}> = (props)  => {
       const identity = await apiService.getIdentity();
       const data = await apiService.getMovieRatings(props.movieId);
       setRatings(data.data);
-      setisRated(data.haveRated); 
+      setHaveRated(data.haveRated); 
       setUserName(identity.data);
     }
     const connect = new HubConnectionBuilder()
@@ -103,7 +101,7 @@ const Ratings : React.FC<{ movieId : string}> = (props)  => {
     //send to Hub. 
     connection.send("ReceiveMessage", rate);
   }
-  
+
   const sendMessage = async () => {
     console.log('clicked send message');
     let rating = await apiService.getMovieRatings('a660d18a-fc15-4de0-8ab9-9871f63506a8');
@@ -112,21 +110,21 @@ const Ratings : React.FC<{ movieId : string}> = (props)  => {
   
   return (
     <div className="the-bros">
-      
-    <button onClick={sendMessage}>Send Message</button>
-      <span className="cursor-pointer">
-        { isRated ? (
-          <><span>{userName}: </span>
-          <span>{userRating}</span></>
-        ) : (
-          <span>Click to rate</span>
-        )}
-      </span>
-      { 
-        ratings?.map(x => {
-          return <span  key={x.userName}><span>{x.userName}: </span><span>{x.rating}</span></span>
-        })
+      {haveRated ? 
+        <div>
+        {
+          ratings?.map(x => {
+            return <span  key={x.userName}><span>{x.userName}: </span><span>{x.rating}</span></span>
+          })
+        }
+        </div> 
+        :
+        <div>
+
+        </div>
       }
+      
     </div>
+      
   )
 }
