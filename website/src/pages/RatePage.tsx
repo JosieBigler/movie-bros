@@ -57,10 +57,10 @@ const Ratings  = ({movieId} : ratingProps)  => {
 
   const [connection, setConnection] = useState<null | HubConnection>(null);
   const [userName, setUserName ] = useState("");
-  const  [ratings, setRatings] =  useState<RatingResponseDTO[]>([{ userName: "Average", rating: 8, movieId}]);
+  const [ratings, setRatings] =  useState<RatingResponseDTO[]>([]);
   const [haveRated, setHaveRated] = useState(false);
   const [rating, setRating] = useState(0);
-  const avgUser:RatingResponseDTO = { userName: "Average", rating: 88, movieId}
+  const avgUser:RatingResponseDTO = { userName: "Average", rating: -1, movieId}
 
   useEffect(() => {
     apiService.getIdentity();
@@ -70,8 +70,8 @@ const Ratings  = ({movieId} : ratingProps)  => {
 
       const identity = await apiService.getIdentity();
       const data = await apiService.getMovieRatings(movieId);
-      setRatings(data.data);
-      setRatings(prevState => [avgUser, ...prevState]);
+      setRatings([avgUser, ...data.data]);
+      SetTheAverageRatingOfRatings([avgUser, ...data.data]); // I don't know what JavaScript is doing but it works
       setHaveRated(data.haveRated); 
       setUserName(identity.data);
     }
@@ -155,10 +155,8 @@ const RateBubble : React.FC<{DisplayName : string, RatingValue : number}> = ({Di
 function SetTheAverageRatingOfRatings(TheArrayWeWillBeUsingToMakeTheAverage:RatingResponseDTO[]) {
   let returnArr:RatingResponseDTO[] = TheArrayWeWillBeUsingToMakeTheAverage;
   let newRate = 0;
-  console.log(returnArr);
   for (let i = 1; i < returnArr.length; i++) {
     newRate += returnArr[i].rating; 
-    console.log(newRate);
   }
   returnArr[0].rating = newRate/(returnArr.length - 1);
   return returnArr
