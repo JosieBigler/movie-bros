@@ -57,10 +57,10 @@ const Ratings  = ({movieId} : ratingProps)  => {
 
   const [connection, setConnection] = useState<null | HubConnection>(null);
   const [userName, setUserName ] = useState("");
-  const  [ratings, setRatings] =  useState<RatingResponseDTO[]>([]);
+  const  [ratings, setRatings] =  useState<RatingResponseDTO[]>([{ userName: "Average", rating: 8, movieId}]);
   const [haveRated, setHaveRated] = useState(false);
   const [rating, setRating] = useState(0);
-
+  const avgUser:RatingResponseDTO = { userName: "Average", rating: 88, movieId}
 
   useEffect(() => {
     apiService.getIdentity();
@@ -71,6 +71,7 @@ const Ratings  = ({movieId} : ratingProps)  => {
       const identity = await apiService.getIdentity();
       const data = await apiService.getMovieRatings(movieId);
       setRatings(data.data);
+      setRatings(prevState => [avgUser, ...prevState]);
       setHaveRated(data.haveRated); 
       setUserName(identity.data);
     }
@@ -102,6 +103,7 @@ const Ratings  = ({movieId} : ratingProps)  => {
 
     //update internal state. 
     const rate = { userName, rating, movieId}
+    SetTheAverageRatingOfRatings([...ratings, rate]); // I don't know what JavaScript is doing but it works
     setRatings(prevState => [...prevState, rate]);
     setHaveRated(true);
     
@@ -121,19 +123,43 @@ const Ratings  = ({movieId} : ratingProps)  => {
         <div>
         {
           ratings?.map(x => {
-            return <span  key={x.userName}><span>{x.userName}: </span><span>{x.rating}</span></span>
+            // return <span  key={x.userName}><span>{x.userName}: </span><span>{x.rating}</span></span>
+            return <RateBubble key={x.userName} DisplayName={x.userName} RatingValue={x.rating}></RateBubble>
           })
         }
         </div> 
         :
         <div>
-          <input value={rating} type="number "onChange={handleChange}/>
+          <input className="text-black" value={rating} type="number" onChange={handleChange}/>
           <button onClick={rateMovie} >Submit</button>
-          
         </div>
       }
-      
     </div>
-      
   )
+}
+const RateBubble : React.FC<{DisplayName : string, RatingValue : number}> = ({DisplayName, RatingValue})  => {
+  return (
+    <div className="w-96 flex">
+      <div className="text-left">
+        {/* <span className="user-initials">{Array.from(DisplayName)[0]}{Array.from(DisplayName)[1]}</span> */}
+        <span className="tracking-wider text-fortress-grey text-sm font-semibold">{DisplayName}'s Rating:
+        </span>
+        {/* <span className="text-white text-right"> {RatingValue}</span> */}
+      </div>
+      <div className="flex-1 text-right">
+        <span className="text-white text-right"> {RatingValue}</span>
+      </div>
+    </div>
+  )
+}
+function SetTheAverageRatingOfRatings(TheArrayWeWillBeUsingToMakeTheAverage:RatingResponseDTO[]) {
+  let returnArr:RatingResponseDTO[] = TheArrayWeWillBeUsingToMakeTheAverage;
+  let newRate = 0;
+  console.log(returnArr);
+  for (let i = 1; i < returnArr.length; i++) {
+    newRate += returnArr[i].rating; 
+    console.log(newRate);
+  }
+  returnArr[0].rating = newRate/(returnArr.length - 1);
+  return returnArr
 }

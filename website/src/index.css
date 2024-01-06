@@ -88,7 +88,7 @@ body {
   text-align: center;
   width: max-content;
 }
-.the-bros {
+/* .the-bros {
   pointer-events: none;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -101,8 +101,8 @@ body {
   .the-bros {
     grid-template-columns: repeat(4, 1fr);
   }
-}
-.user-initials {
+} */
+/* .user-initials {
   width: 48px;
   padding: 4px;
   border-radius: 30%;
@@ -110,4 +110,4 @@ body {
   line-height: 2.5rem;
   font-weight: 700;
   background-image: linear-gradient(to bottom right,  #17110a 0%,  #00203e 60%,  var(--prussian-blue)100%);
-}
+} */
