@@ -99,7 +99,7 @@ const Ratings : React.FC<{ movieId : string}> = (props)  => {
     apiService.rateMovie(props.movieId, rate.rating);
 
     //send to Hub. 
-    connection.send("ReceiveMessage", rate);
+    connection?.send("ReceiveMessage", rate);
   }
 
   const sendMessage = async () => {
@@ -121,6 +121,7 @@ const Ratings : React.FC<{ movieId : string}> = (props)  => {
         :
         <div>
           You have not rated, you can not see the ratings.
+          
         </div>
       }
       
