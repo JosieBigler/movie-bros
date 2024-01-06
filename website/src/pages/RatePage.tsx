@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, FormEventHandler, useEffect, useState } from "react";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import apiService from "../data/ApiService";
 import { RatingResponseDTO } from "../data/RatingApiResponseDTO";
@@ -101,23 +101,20 @@ const Ratings  = ({movieId} : ratingProps)  => {
   const rateMovie = async () => {
 
     //update internal state. 
-    const rate = { userName, rating, movieId: props.movieId}
+    const rate = { userName, rating, movieId}
     setRatings(prevState => [...prevState, rate]);
     setHaveRated(true);
     
     //send to database.
-    apiService.rateMovie(props.movieId, rate.rating);
+    apiService.rateMovie(movieId, rate.rating);
 
     //send to Hub. 
     connection?.send("ReceiveMessage", rate);
   }
 
-  const sendMessage = async () => {
-    console.log('clicked send message');
-    let rating = await apiService.getMovieRatings('a660d18a-fc15-4de0-8ab9-9871f63506a8');
-    console.log(rating);
-  };
-  
+  const handleChange = (event : ChangeEvent<HTMLInputElement>) => {
+    setRating(event.target.value as number);
+  }
   return (
     <div className="the-bros">
       {haveRated ? 
@@ -130,8 +127,8 @@ const Ratings  = ({movieId} : ratingProps)  => {
         </div> 
         :
         <div>
-          <input value={rating} />
-          <button onClick={rateMovie}>Submit</button>
+          <input value={rating} type="number "onChange={handleChange}/>
+          <button onClick={rateMovie} >Submit</button>
           
         </div>
       }
