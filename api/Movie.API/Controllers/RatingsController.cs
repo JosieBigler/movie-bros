@@ -30,11 +30,14 @@ namespace MovieBro.API.Controllers
             var userId = _userManager.GetUserId(HttpContext.User);
             if (userId is null) return new ApiResult { Success = false, Message = "User not found" };
 
+            var possibleCurrentRating = _movieContext.Rating.Any(x => x.UserId == Guid.Parse(userId) && x.MovieId == Guid.Parse(dto.MovieId));
+            if (possibleCurrentRating) return new ApiResult { Success = false, Message = "User has already rated this movie." };
+
             var rating = new Rating
             {
                 DateRated = DateTime.UtcNow,
-                MovieId = dto.MovieId,
-                Value = dto.Value,
+                MovieId = Guid.Parse(dto.MovieId),
+                Value = dto.Rating,
                 UserId = Guid.Parse(userId)
             };
 

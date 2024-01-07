@@ -2,8 +2,9 @@
 {
     public class RatingDTO
     {
-        public Guid MovieId { get; set; }
-        public float Value { get; set; }
+        public string MovieId { get; set; }
+        public float Rating { get; set; }
+        public string UserName { get; set; }
     }
 
 }

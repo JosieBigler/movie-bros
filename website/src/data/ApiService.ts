@@ -21,7 +21,10 @@ const apiService = {
         let response = await fetch(url + '/api/Ratings', {
             method: 'POST',
             credentials: 'include',
-            body: JSON.stringify({ movieId, value: rating})
+            headers: {
+                "Content-Type": "application/json",
+              },
+            body: JSON.stringify({ movieId, rating, userName: 'blah'})
         })
         return response.json();
     },

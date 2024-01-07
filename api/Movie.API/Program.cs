@@ -43,8 +43,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
-    .AddEntityFrameworkStores<IdentityContext>();
+builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddEntityFrameworkStores<IdentityContext>();
 
 var app = builder.Build();
 

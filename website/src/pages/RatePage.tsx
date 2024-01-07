@@ -1,8 +1,8 @@
 
 import { ChangeEvent, FormEvent, FormEventHandler, useEffect, useState } from "react";
-import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import apiService from "../data/ApiService";
-import { RatingResponseDTO } from "../data/RatingApiResponseDTO";
+import { RatingApiResponseDTO, RatingResponseDTO } from "../data/RatingApiResponseDTO";
+import HubConnector from "../data/HubConnector";
 
 const imagesPath: string[] = [
   'https://www.themoviedb.org/t/p/original/5C5oQtJ50Vg2qoVTp9XjNPyqZlq.jpg', 
@@ -55,67 +55,79 @@ export const RatingPage = ({movieId} : ratingProps) => {
 
 const Ratings  = ({movieId} : ratingProps)  => {
 
-  const [connection, setConnection] = useState<null | HubConnection>(null);
   const [userName, setUserName ] = useState("");
   const [ratings, setRatings] =  useState<RatingResponseDTO[]>([]);
   const [haveRated, setHaveRated] = useState(false);
   const [rating, setRating] = useState(0);
-  const avgUser:RatingResponseDTO = { userName: "Average", rating: -1, movieId}
+  const [avgUser, setAvgUser] = useState<RatingResponseDTO>({ userName: "Average", rating: -1, movieId});
+  const { newMessage, events } = HubConnector();
 
   useEffect(() => {
+    //on first page load, do the stuff
     apiService.getIdentity();
 
+    
     const fetchData = async () => {
       console.log(movieId);
 
       const identity = await apiService.getIdentity();
       const data = await apiService.getMovieRatings(movieId);
-      setRatings([avgUser, ...data.data]);
-      SetTheAverageRatingOfRatings([avgUser, ...data.data]); // I don't know what JavaScript is doing but it works
+      setRatings([...data.data]);
+      setAverage();
+      //SetTheAverageRatingOfRatings([avgUser, ...data.data]); // I don't know what JavaScript is doing but it works
       setHaveRated(data.haveRated); 
       setUserName(identity.data);
+      
     }
-    const connect = new HubConnectionBuilder()
-      .withUrl("https://localhost:7097/hubs/rating")
-      .withAutomaticReconnect()
-      .build();
-  
+
     fetchData().catch(console.error);
-    setConnection(connect);
+    
+    events((movieId, userName, rating) => {
+      let alreadyRated = ratings.find(x => x.movieId == movieId && x.userName == userName);
+      if(alreadyRated) return; 
+
+      setRatings(prevState => [...prevState, {movieId, userName, rating }]);
+    });
+
+
   }, []);
 
-  useEffect(() => {
-    if (connection) {
-      connection
-        .start()
-        .then(() => {
-          connection.on("ReceiveMessage", (message) => {
-            console.log('Message REceived from SignalR');
-            //Set the rating from within here? 
-            console.log(message);
-          });
-        })
-        .catch((error) => console.log(error));
-    }
-  }, [connection]);
 
   const rateMovie = async () => {
 
     //update internal state. 
     const rate = { userName, rating, movieId}
-    SetTheAverageRatingOfRatings([...ratings, rate]); // I don't know what JavaScript is doing but it works
-    setRatings(prevState => [...prevState, rate]);
-    setHaveRated(true);
+    //setRatings(prevState => [...prevState, rate]);
+    //const newAverage = SetTheAverageRatingOfRatings(ratings); // I don't know what JavaScript is doing but it works
+    //setAvgUser({ userName: 'Average', rating: newAverage, movieId});
+    //setAverage();
     
     //send to database.
     apiService.rateMovie(movieId, rate.rating);
-
+    
     //send to Hub. 
-    connection?.send("ReceiveMessage", rate);
+    newMessage(rate);
+
+    setHaveRated(true);
+
+  }
+
+  const setAverage = () => {
+    let average = 0;
+    ratings.forEach(x => {
+      if(x.userName != "Average"){
+        console.log(x);
+        average += x.rating;
+      }
+    });
+
+    average = (average / (ratings.length - 1));
+
+    setAvgUser({ userName: 'Average', rating: average, movieId});
   }
 
   const handleChange = (event : ChangeEvent<HTMLInputElement>) => {
-    setRating(event.target.value as number);
+    setRating(event.target.value);
   }
   return (
     <div className="the-bros">
@@ -152,12 +164,12 @@ const RateBubble : React.FC<{DisplayName : string, RatingValue : number}> = ({Di
     </div>
   )
 }
-function SetTheAverageRatingOfRatings(TheArrayWeWillBeUsingToMakeTheAverage:RatingResponseDTO[]) {
-  let returnArr:RatingResponseDTO[] = TheArrayWeWillBeUsingToMakeTheAverage;
-  let newRate = 0;
-  for (let i = 1; i < returnArr.length; i++) {
-    newRate += returnArr[i].rating; 
-  }
-  returnArr[0].rating = newRate/(returnArr.length - 1);
-  return returnArr
-}
+
+// function SetTheAverageRatingOfRatings(TheArrayWeWillBeUsingToMakeTheAverage:RatingResponseDTO[]) : number {
+//   let returnArr:RatingResponseDTO[] = TheArrayWeWillBeUsingToMakeTheAverage;
+//   let newRate = 0;
+//   for (let i = 1; i < returnArr.length; i++) {
+//     newRate += returnArr[i].rating; 
+//   }
+//   return newRate/(returnArr.length - 1);
+// }

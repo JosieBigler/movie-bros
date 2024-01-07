@@ -15,37 +15,37 @@ namespace MovieBro.API
             _userManager = userManager;
         }
 
-        public async Task AddToGroup(string groupName)
-        {
-            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+        //public async Task AddToGroup(string groupName)
+        //{
+        //    await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
 
-            await Clients.Group(groupName).SendAsync("Send", $"{Context.ConnectionId} has joined the group {groupName}.");
-        }
+        //    await Clients.Group(groupName).SendAsync("Send", $"{Context.ConnectionId} has joined the group {groupName}.");
+        //}
 
-        public async Task RemoveFromGroup(string groupName)
-        {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+        //public async Task RemoveFromGroup(string groupName)
+        //{
+        //    await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
 
-            await Clients.Group(groupName).SendAsync("Send", $"{Context.ConnectionId} has left the group {groupName}.");
-        }
+        //    await Clients.Group(groupName).SendAsync("Send", $"{Context.ConnectionId} has left the group {groupName}.");
+        //}
 
-        public async Task SendMessage(RatingDTO message)
+        public async Task NewMessage(string movieId, string userName, string rating)
         {
             //Get the user from the cookie.  If not authorized then don't do nothing.
             //We only send the message if we haven't rated.
-            if (Context.User is null) return;
+            //if (Context.User is null) return;
 
-            if (!Context.User.Identities.Any(x => x.IsAuthenticated)) return;
+            //if (!Context.User.Identities.Any(x => x.IsAuthenticated)) return;
 
-            var user = await _userManager.GetUserAsync(Context.User);
+            //var user = await _userManager.GetUserAsync(Context.User);
 
-            if (user == null) return;
+            //if (user == null) return;
 
-            var hasRated = _movieContext.Rating.Any(x => x.UserId == Guid.Parse(user.Id) && x.MovieId == message.MovieId);
+            //var hasRated = _movieContext.Rating.Any(x => x.UserId == Guid.Parse(user.Id) && x.MovieId == Guid.Parse(message.MovieId));
 
-            if (hasRated) return;
+            //if (hasRated) return;
 
-            await Clients.All.SendAsync("ReceiveMessage", new { message.MovieId, message.Value, user.UserName });
+            await Clients.All.SendAsync("messageReceived", movieId, userName, rating);
         }
     }
 }
