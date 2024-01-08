@@ -57,10 +57,13 @@ export const RatingPage = ({movieId} : ratingProps) => {
 const Ratings  = ({movieId} : ratingProps)  => {
 
   const [userName, setUserName ] = useState("");
+  const [rating, setRating] = useState(0); // Probably merge these two into one variable
+  // const [thisUser, setAvgUser] = useState<RatingResponseDTO>({ userName: "", rating: 0, movieId});
+
   const [ratings, setRatings] =  useState<RatingResponseDTO[]>([]);
   const [haveRated, setHaveRated] = useState(false);
-  const [rating, setRating] = useState(0);
   const [avgUser, setAvgUser] = useState<RatingResponseDTO>({ userName: "Average", rating: 0, movieId});
+  const [shawnAvg, setShawnAvg] = useState<number>(999);
   const [connectionRef, setConnection] = useState < HubConnection > ();
   const [newRating, setNewRating] = useState<RatingResponseDTO | null>(null);
 
@@ -75,7 +78,8 @@ const Ratings  = ({movieId} : ratingProps)  => {
 
   useEffect(() => {
     if(newRating){
-      console.log('newRating effect', ratings);
+      console.log('newRating effect', newRating);
+      setShawnAvg(SetTheAverageRatingOfRatings([...ratings, newRating]));
       if(!ratings.some(x => x.movieId == newRating.movieId && x.userName == newRating.userName))
       {
         setRatings(prevState => [...prevState, newRating]);
@@ -98,7 +102,7 @@ const Ratings  = ({movieId} : ratingProps)  => {
             connectionRef.on('messageReceived', (movieId : stirng, userName : string, rating : number) => {
               console.log(movieId, userName, rating);
               setNewRating({ movieId, userName, rating});
-              //do rating stuff here 
+              //do rating stuff here  
             });
           })
           .catch((err) => {
@@ -128,7 +132,8 @@ const Ratings  = ({movieId} : ratingProps)  => {
       setRatings([...data.data]);
 
       if(data.data.length > 0) {
-        setAverage();
+        setAverage(); 
+        setShawnAvg(SetTheAverageRatingOfRatings([...data.data]));
       }
 
       setHaveRated(data.haveRated); 
@@ -147,16 +152,14 @@ const Ratings  = ({movieId} : ratingProps)  => {
     await apiService.rateMovie(movieId, rate.rating);
 
     //update internal state. 
-    setRatings(prevState => [...prevState, rate]);
-    //const newAverage = SetTheAverageRatingOfRatings(ratings); // I don't know what JavaScript is doing but it works
-    //setAvgUser({ userName: 'Average', rating: newAverage, movieId});
+    // setRatings(prevState => [...prevState, rate]); you don't need this here
     //setAverage();
     
     //send to database.
     
     //send to Hub. 
     connectionRef.send("newMessage", movieId, userName, rating);
-    setAverage();
+    // setAverage(); you don't need this here
   }
 
   const setAverage = () => {
@@ -181,6 +184,7 @@ const Ratings  = ({movieId} : ratingProps)  => {
     <div className="the-bros">
       {haveRated ? 
         <div>
+          <RateBubble key={"shawn setAvg"} DisplayName={"shawn setAvg"} RatingValue={shawnAvg}></RateBubble>
           <RateBubble key={avgUser.userName} DisplayName={avgUser.userName} RatingValue={avgUser.rating}></RateBubble>
         {
           
@@ -215,11 +219,11 @@ const RateBubble : React.FC<{DisplayName : string, RatingValue : number}> = ({Di
   )
 }
 
-// function SetTheAverageRatingOfRatings(TheArrayWeWillBeUsingToMakeTheAverage:RatingResponseDTO[]) : number {
-//   let returnArr:RatingResponseDTO[] = TheArrayWeWillBeUsingToMakeTheAverage;
-//   let newRate = 0;
-//   for (let i = 1; i < returnArr.length; i++) {
-//     newRate += returnArr[i].rating; 
-//   }
-//   return newRate/(returnArr.length - 1);
-// }
+function SetTheAverageRatingOfRatings(TheArrayWeWillBeUsingToMakeTheAverage:RatingResponseDTO[]) : number {
+  let arrrry:RatingResponseDTO[] = TheArrayWeWillBeUsingToMakeTheAverage;
+  let newRate = 0;
+  for (let i = 0; i < arrrry.length; i++) {
+    newRate += Number(arrrry[i].rating); 
+  }
+  return newRate/(arrrry.length);
+}
