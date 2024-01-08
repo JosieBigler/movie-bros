@@ -60,7 +60,7 @@ const Ratings  = ({movieId} : ratingProps)  => {
   const [ratings, setRatings] =  useState<RatingResponseDTO[]>([]);
   const [haveRated, setHaveRated] = useState(false);
   const [rating, setRating] = useState(0);
-  const [avgUser, setAvgUser] = useState<RatingResponseDTO>({ userName: "Average", rating: -1, movieId});
+  const [avgUser, setAvgUser] = useState<RatingResponseDTO>({ userName: "Average", rating: 0, movieId});
   const [connectionRef, setConnection] = useState < HubConnection > ();
   const [newRating, setNewRating] = useState<RatingResponseDTO | null>(null);
 
@@ -79,6 +79,7 @@ const Ratings  = ({movieId} : ratingProps)  => {
       if(!ratings.some(x => x.movieId == newRating.movieId && x.userName == newRating.userName))
       {
         setRatings(prevState => [...prevState, newRating]);
+        setAverage();
       }
       
     }
@@ -86,7 +87,7 @@ const Ratings  = ({movieId} : ratingProps)  => {
       setNewRating(null);
     }
 
-  }, [ratings, newRating]);
+  }, [ratings, newRating, avgUser]);
 
   useEffect(() => {
     if (connectionRef) {
@@ -125,7 +126,11 @@ const Ratings  = ({movieId} : ratingProps)  => {
       const identity = await apiService.getIdentity();
       const data = await apiService.getMovieRatings(movieId);
       setRatings([...data.data]);
-      setAverage();
+
+      if(data.data.length > 0) {
+        setAverage();
+      }
+
       setHaveRated(data.haveRated); 
       setUserName(identity.data);
       
@@ -151,12 +156,12 @@ const Ratings  = ({movieId} : ratingProps)  => {
     
     //send to Hub. 
     connectionRef.send("newMessage", movieId, userName, rating);
-
-
+    setAverage();
   }
 
   const setAverage = () => {
     let average = 0;
+    if(ratings.length < 1 ) return;
     ratings.forEach(x => {
       if(x.userName != "Average"){
         console.log(x);
@@ -164,7 +169,7 @@ const Ratings  = ({movieId} : ratingProps)  => {
       }
     });
 
-    average = (average / (ratings.length - 1));
+    average = (average / (ratings.length));
 
     setAvgUser({ userName: 'Average', rating: average, movieId});
   }
